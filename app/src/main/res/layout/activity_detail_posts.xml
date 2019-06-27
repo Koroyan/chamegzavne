@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activityes.DetailPostsActivity">
+
+
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/info_detail_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:cardCornerRadius="70sp"
+            app:cardBackgroundColor="#D8CACA"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="9sp">
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/gel_detail_post"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+                <TextView
+                    android:id="@+id/info_detail_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Grigorys"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textSize="25sp"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    android:layout_marginTop="12sp"/>
+                <TextView
+                    android:id="@+id/post_detail_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="mdffsdgfdfgd"
+                    app:layout_constraintTop_toBottomOf="@id/info_detail_user_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:textStyle="italic"
+                    android:textSize="18sp"
+                    android:padding="15sp"/>
+
+                <TextView
+                    android:id="@+id/post_detail_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/post_detail_title" />
+
+                <TextView
+                    android:id="@+id/post_detail_accept_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="accept"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_margin="22sp"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000"/>
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "542724121339",
+    "firebase_url": "https://chamegzavnedatabase.firebaseio.com",
+    "project_id": "chamegzavnedatabase",
+    "storage_bucket": "chamegzavnedatabase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:542724121339:android:37e1dd71b5b9380e",
+        "android_client_info": {
+          "package_name": "com.example.chamegzavne"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "542724121339-ntg12e8tqedn3rmmna1am56janvrenuq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chamegzavne",
+            "certificate_hash": "9d9a2102e37bc40d4a1fd59cb320fd800611d7ec"
+          }
+        },
+        {
+          "client_id": "542724121339-kujj9nfmvul23ipu6fsh3fbc3sm95ptu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwArxlBCoxJUwNnkfPrrLPPN4rBKXXf9w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "542724121339-kujj9nfmvul23ipu6fsh3fbc3sm95ptu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">chamegzavne</string>
+    <string name="title_map">Map</string>
+    <string name="title_messages">Messages</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="facebook_app_id">301126120768600</string>
+    <string name="fb_login_protocol_scheme">fb301126120768600</string>
+    <string name="list">list</string>
+    <string name="settings">settings</string>
+    <string name="menu_sign_out">menu_sign_out</string>
+</resources>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#90ACA8"
+    tools:context=".Activityes.AddPostsActivity">
+    <TextView
+        android:id="@+id/add_txt_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="10dp"
+        android:textSize="30sp"
+        android:text="Add post"/>
+
+    <EditText
+        android:id="@+id/title_id"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80sp"
+        android:hint="Title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_txt_id" />
+
+    <EditText
+        android:id="@+id/gel_id"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20sp"
+        android:hint="GEL"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_id" />
+
+
+    <EditText
+        android:id="@+id/comment_id"
+        android:layout_width="match_parent"
+        android:layout_height="200sp"
+        android:hint="comment"
+        android:gravity="top|left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gel_id"
+        android:layout_marginTop="20sp"
+        />
+    <TextView
+        android:id="@+id/send_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="send"
+        android:textColor="#000000"
+        android:textSize="35sp"
+        android:layout_marginTop="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/comment_id"
+        />
+
+
+</android.support.constraint.ConstraintLayout>
