@@ -1,8 +1,8 @@
 package com.example.chamegzavne.Adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +12,11 @@ import android.widget.TextView;
 import com.example.chamegzavne.InfoClass.Chat;
 import com.example.chamegzavne.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecyclerViewAdapter.ViewHolder> {
@@ -54,6 +56,8 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
         else{
             viewHolder.userName.setText(chat.get(i).getUserName());
             viewHolder.userMessage.setText(chat.get(i).getUserMessage());
+            viewHolder.messageTime.setText(chat.get(i).getSendTime());
+            Picasso.get().load(chat.get(i).getUserPhotoUri()).into(viewHolder.profileimage);
         }
     }
 
@@ -90,12 +94,17 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
         TextView userName;
         TextView userMessage;
         TextView userMessageRight;
+        TextView messageTime;
+        CircleImageView profileimage;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            userName=itemView.findViewById(R.id.user_name);
-            userMessage=itemView.findViewById(R.id.user_message);
+            userName=itemView.findViewById(R.id.message_profile_name);
+            userMessage=itemView.findViewById(R.id.message_profile_message);
             userMessageRight=itemView.findViewById(R.id.user_message_right);
+            messageTime=itemView.findViewById(R.id.text_message_time);
+            profileimage=itemView.findViewById(R.id.message_profile_image);
         }
 
     }

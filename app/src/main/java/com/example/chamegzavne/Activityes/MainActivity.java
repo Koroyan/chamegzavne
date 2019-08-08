@@ -1,6 +1,7 @@
 package com.example.chamegzavne.Activityes;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -21,20 +22,30 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.example.chamegzavne.InfoClass.ChatList;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -42,11 +53,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.chamegzavne.Adapters.UnreadMessagesAdapter;
 import com.example.chamegzavne.InfoClass.Post;
 import com.example.chamegzavne.InfoClass.User;
 import com.example.chamegzavne.R;
+import com.example.chamegzavne.Services.UnreadedMessagesListenerService;
 import com.example.chamegzavne.push_notification.MySingleton;
 import com.facebook.login.LoginManager;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -55,17 +69,21 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,12 +94,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
+//test Admob Manifest  ca-app-pub-3940256099942544~3347511713
+//autounid  ca-app-pub-3940256099942544/6300978111
+
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener, UnreadedMessagesListenerService.IunreadMessagesCount {
     private static final String TAG = "mylocation";
+    private static final String adMobTAG="adMobTag";
     //Intent Keys
     private static final String INTENT_INFO_KEY = "intent_info_key";
     private static final String INTENT_CHAT_KEY = "intent.chat.key";
     private static final String INTENT_NAV_BAR_KEY="intent.navbar.key";
+
+
 
     //push_Notification keys
     final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
@@ -89,16 +113,29 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     final private String contentType = "application/json";
 
 
+    //context
+    private static Context context;
+
+
     String NOTIFICATION_TITLE;
     String NOTIFICATION_MESSAGE;
     String TOPIC;
+
+    //messages
+    public static int COUNT_UNREAD_MESSAGES;
 
     //Firebase initialize.....
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRefUser = database.getReference("users/mylocation");
     DatabaseReference myPostRef = database.getReference("posts");
     DatabaseReference myMessagelistRef = database.getReference("messagelist");
+    DatabaseReference addChatList;
+
     DatabaseReference myMessageRef = database.getReference("message");
+    FirebaseStorage storage;
+    StorageReference storageReference;
+
+
     //Map for mapMarker
     private final Map<String, MarkerOptions> mMarkers = new ConcurrentHashMap<String, MarkerOptions>();
     private Map<String, Post> markerpost = new HashMap<>();
@@ -114,9 +151,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //USER
     private static List<User> users = new ArrayList<>();
     User user;
-    public static String userName;
-    public static String userID;
-    public static Uri userProfilePhoto;
+    public static String userName=null;
+    public static String userID=null;
+    public static Uri userProfilePhoto=null;
     // DatabaseReference myChatID=database.getReference(userID);
     //post
     Post post;
@@ -126,6 +163,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //Buttons
     FloatingActionButton add_marker;
+    Button mes_btn;
+    private static TextView unread_messages;
+    TextView tollbartitle;
 
 
     String key = null;
@@ -142,24 +182,102 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     BottomNavigationView bottomNavigationViewListMap;
     Toolbar toolbar;
 
+    Uri postImage;
 
+
+    //unreadmessages
+    UnreadMessagesAdapter unreadMessagesAdapter;
+
+
+    AdView mAdView;
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: skizb");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
+
+
+
+        context=MainActivity.this;
+
+        MobileAds.initialize(this,
+                "ca-app-pub-1537892667165291~9892742328");
+
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("9D90BF50426EBE7A00CB247ED854F2DE").build();
+        mAdView.loadAd(adRequest);
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                Log.d(adMobTAG, "onAdLoaded: ");
+                // Code to be executed when an ad finishes loading.
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                Log.d(adMobTAG, "onAdFailedToLoad: "+errorCode);
+                Toast.makeText(MainActivity.this, "adMob error: "+errorCode, Toast.LENGTH_SHORT).show();
+                // Code to be executed when an ad request fails.
+            }
+
+            @Override
+            public void onAdOpened() {
+                Log.d(adMobTAG, "onAdOpened: ");
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+            }
+
+            @Override
+            public void onAdClicked() {
+                Log.d(adMobTAG, "onAdClicked: ");
+                // Code to be executed when the user clicks on an ad.
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                Log.d(adMobTAG, "onAdLeftApplication: ");
+                // Code to be executed when the user has left the app.
+            }
+
+            @Override
+            public void onAdClosed() {
+                Log.d(adMobTAG, "onAdClosed: ");
+                // Code to be executed when the user is about to return
+                // to the app after tapping on an ad.
+            }
+        });
+
+// TODO: Add adView to your view hierarchy.
+
+
+      //  unreadMessagesAdapter=new UnreadMessagesAdapter();
+      //  unreadMessagesAdapter.setUnreadMessagesInterface(this);
+
         toolbar=findViewById(R.id.main_toolbar_id);
         setSupportActionBar(toolbar);
 
 
+
+
         add_marker = findViewById(R.id.add_marker);
+        mes_btn=findViewById(R.id.messages_btn_id);
+        unread_messages=findViewById(R.id.unread_messages);
         firebaseAuth = FirebaseAuth.getInstance();
         add_marker.setOnClickListener(this);
+        mes_btn.setOnClickListener(this);
 
 
-        bottomNavigationViewListMap = findViewById(R.id.list_map_nav_bar);
 
+      /*  bottomNavigationViewListMap = findViewById(R.id.list_map_nav_bar);
+        bottomNavigationViewListMap.setItemIconTintList(null);
         bottomNavigationViewListMap.getMenu().findItem(R.id.navigation_map).setChecked(true);
         bottomNavigationViewListMap.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -170,15 +288,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         Intent intent = new Intent(MainActivity.this, PostListActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent);
+                        menuItem.setChecked(true);
 
                         return true;
                 }
                 return false;
             }
-        });
+        });*/
 
         bottomNavigationView = findViewById(R.id.nav_bar);
-
+        bottomNavigationView.setItemIconTintList(null);
         bottomNavigationView.getMenu().findItem(R.id.navigation_map).setChecked(true);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -186,18 +305,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Toast.makeText(MainActivity.this, "" + menuItem.getMenuInfo(), Toast.LENGTH_SHORT).show();
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_messages:
-                        Intent intent = new Intent(MainActivity.this, MessageListActivity.class);
+                        Intent intent = new Intent(MainActivity.this, PostListActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(intent);
-
+                        menuItem.setChecked(true);
                         return true;
                 }
                 return false;
             }
         });
 
+        //firebaseListener();
         locationInitializer();
-        firebaseListener();
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -205,7 +325,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
         Log.d(TAG, "onCreate: verj");
-
 
     }
 
@@ -226,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Toast.makeText(this,item.getTitle().toString(),Toast.LENGTH_SHORT).show();
                 LoginManager.getInstance().logOut();
                 firebaseAuth.signOut();
-                startActivity(new Intent(getBaseContext(), MainActivity.class));
+                startActivity(new Intent(getBaseContext(), LoginActivity.class));
                 finish();
                 return true;
             default:
@@ -247,6 +366,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Intent intent = new Intent(MainActivity.this, DetailPostsActivity.class);
                 ArrayList<String> puting = new ArrayList<>();
                 Post post = markerpost.get(marker.getId());
+                assert post != null;
                 Log.d("mypost", "onInfoWindowClick: " + post.getpUserID() + " : " + userID);
                 if (post.getpUserID().equals(userID)) {
 
@@ -259,8 +379,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 puting.add(post.getpComment());                   //[4]comment
                 puting.add(post.getpGel());                       //[5]gel
                 puting.add(post.getpUserID() + post.getpTitle().toString());             //[6]Post user ID for post
-                puting.add(post.getpUserID());                                         //[7]post user id
-
+                puting.add(post.getpUserID());                                    //[7]post user id
+                puting.add(post.getpPhotoURL());                  //[8] post photoURI
+                puting.add(post.getpUserPhotoURL());              //[9]user photoURI
+                puting.add(String.valueOf(post.getpLatitude()));                  //[10] latidute
+                puting.add(String.valueOf(post.getpLongitude()));                 //[11] longitude
                 //intent.putExtra(INTENT_CHAT_KEY,userID+marker.getId().toString());
                 intent.putStringArrayListExtra(INTENT_CHAT_KEY, puting);
                 startActivity(intent);
@@ -286,6 +409,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 startActivityForResult(intent, 100);
                 return;
+            case R.id.messages_btn_id:
+                COUNT_UNREAD_MESSAGES=0;
+                Intent intent1=new Intent(MainActivity.this,MessageListActivity.class);
+                intent1.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent1);
+                return;
 
 
 
@@ -300,32 +429,69 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
         if (requestCode == 100) {
-            String[] result = data.getStringArrayExtra(INTENT_INFO_KEY);
+            final String[] result = data.getStringArrayExtra(INTENT_INFO_KEY);
             // ArrayList<String> result = data.getStringArrayListExtra(INTENT_INFO_KEY);
             // Log.d("putextra", "onActivityResult:" + result.get(0) + result.get(1) + result.get(2));
             Log.d("username", "onActivityResult: " + userName);
-            post = new Post(userName, result[0], result[1], result[2],userProfilePhoto.toString(), userID, mylocation.getLatitude(), mylocation.getLongitude());
-            myPostRef.child(userID + result[1]).setValue(post);
 
-            TOPIC = "messages"; //topic has to match what the receiver subscribed to
-            NOTIFICATION_TITLE = post.getpTitle();
-            NOTIFICATION_MESSAGE = post.getpComment();
+            storage = FirebaseStorage.getInstance();
+            storageReference = storage.getReference();
+            final String[] imageURL = new String[1];
 
-            JSONObject notification = new JSONObject();
-            JSONObject notifcationBody = new JSONObject();
-            try {
-                notifcationBody.put("title", NOTIFICATION_TITLE);
-                notifcationBody.put("message", NOTIFICATION_MESSAGE);
-                notifcationBody.put("ID", userID);
+            StorageReference ref = storageReference.child("images/"+
+                    userID +
+                    result[1]);
+            Log.d("photoURI", "URI useridtitle: "+userID+result[1]);
+
+            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    // Got the download URL for 'users/me/profile.png'
+                    // Pass it to Picasso to download, show in ImageView and caching
+                    Log.d("photoURI", "Uri: " + uri.toString());
+                    imageURL[0] = uri.toString();
+                    post = new Post(userName, result[0], result[1], result[2], userProfilePhoto.toString(), imageURL[0], userID, mylocation.getLatitude(), mylocation.getLongitude());
+                    myPostRef.child(userID + result[1]).setValue(post);
+
+                    TOPIC = "messages"; //topic has to match what the receiver subscribed to
+                    NOTIFICATION_TITLE = post.getpTitle();
+                    NOTIFICATION_MESSAGE = post.getpComment();
+
+                    addChatList=database.getReference("chatLists/"+MainActivity.userID);
+                    addChatList.child(MainActivity.userID+result[1]).setValue(new ChatList(MainActivity.userName,result[1].toString(),MainActivity.userID,imageURL[0]));
+                    JSONObject notification = new JSONObject();
+                    JSONObject notifcationBody = new JSONObject();
+                    try {
+                        notifcationBody.put("title", NOTIFICATION_TITLE);
+                        notifcationBody.put("message", NOTIFICATION_MESSAGE);
+                        notifcationBody.put("ID", userID);
 
 
-                notification.put("to", FirebaseInstanceId.getInstance().getToken());
-                notification.put("data", notifcationBody);
+                        notification.put("to", FirebaseInstanceId.getInstance().getToken());
+                        notification.put("data", notifcationBody);
 
-            } catch (JSONException e) {
-                Log.e(TAG, "onCreate: " + e.getMessage());
-            }
-            sendNotification(notification);
+                    } catch (JSONException e) {
+                        Log.e(TAG, "onCreate: " + e.getMessage());
+                    }
+                    sendNotification(notification);
+
+
+                }
+
+
+
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Log.d("photoURI", "onFailure: "+exception.getMessage());
+                    // Handle any errors
+                }
+            });
+
+          //  post = new Post(userName, result[0], result[1], result[2],userProfilePhoto.toString(), imageURL[0], userID, mylocation.getLatitude(), mylocation.getLongitude());
+          //  myPostRef.child(userID + result[1]).setValue(post);
+
+
 
 
         } else {
@@ -340,28 +506,51 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart: skizb");
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
-            userProfilePhoto = currentUser.getProviderData().get(0).getPhotoUrl();
-            userName = currentUser.getDisplayName();
-            Log.d("username", "onStart: " + userName);
-            userID = currentUser.getUid();
-            if (userName == null) {
-                finish();
-            }
-            Log.d("myfirebase", "USERID: " + userID);
-            Log.d("myfirebase", "user name: " + currentUser.getDisplayName());
-        }
-
-        if (currentUser == null) {
-
-            startActivity(new Intent(this, LoginActivity.class));
+        COUNT_UNREAD_MESSAGES=0;
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user==null){
+            Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
             finish();
+            return;
         }
+        startService(new Intent(MainActivity.this,UnreadedMessagesListenerService.class));
+        // find the Facebook profile and get the user's id
+        try {
+            for (UserInfo profile : user.getProviderData()) {
+
+                // check if the provider id matches "facebook.com"
+                if (FacebookAuthProvider.PROVIDER_ID.equals(profile.getProviderId())) {
+                    userID = profile.getUid();
+                    userName = profile.getDisplayName();
+                    if (profile.getPhotoUrl() != null) {
+                        userProfilePhoto = profile.getPhotoUrl();
+                    } else {
+                        userProfilePhoto = null;
+                    }
+                }
+            }
+
+        }
+        catch(Exception e){
+            Log.d("mylocation", "onStart: Error"+e);
+            Toast.makeText(MainActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+// construct the URL to the profile picture, with a custom height
+// alternatively, use '?type=small|medium|large' instead of ?height=
+       // userProfilePhoto = "https://graph.facebook.com/" + userID + "/picture?height=500";
+
+
+
+
         Log.d(TAG, "onStart: verj");
-    }
+        }
+
+
+
+
 
 
     //locationManagerinit
@@ -380,12 +569,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Log.d("my", "onChildAdded: ");
                 Post post = dataSnapshot.getValue(Post.class);
 
-                assert post != null;
+
                 if (post.getpUserID() == null) return;
 
-                String key = add(post.getpName() + " : " + post.getpTitle(), new LatLng(post.getpLatitude(), post.getpLongitude()),Uri.parse(post.getpPhotoURL()));
+                try {
+                    String key = add(post.getpName() + " : " + post.getpTitle(), new LatLng(post.getpLatitude(), post.getpLongitude()), Uri.parse(post.getpUserPhotoURL()));
+                    markerpost.put(key, post);
+                }
+                catch (Exception e){
+                    Log.d("mylocation", "onChildAdded: Error"+e);
+                    Toast.makeText(MainActivity.this,"onChildAdded Erroe: "+e,Toast.LENGTH_LONG).show();
 
-                markerpost.put(key, post);
+                }
+
                 if ((post.getpUserID().equals(userID))) {
                     //  showNotification(MainActivity.this,post.getpTitle(),post.getpComment(),new Intent(MainActivity.this,MainActivity.class   ));
                 }
@@ -438,7 +634,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
          Target target = new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                add_marker.setImageBitmap(getCircledBitmap(bitmap));
                 final MarkerOptions marker = new MarkerOptions().position(ll).title(name).icon(BitmapDescriptorFactory.fromBitmap(getCircledBitmap(bitmap)));
                 mMarkers.put(name, marker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(ll));
@@ -491,22 +686,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+       // COUNT_UNREAD_MESSAGES=0;
+        stopService(new Intent(MainActivity.this,UnreadedMessagesListenerService.class));
+    }
+
+    @Override
     protected void onResume() {
-        Log.d(TAG, "onResume: skizb");
-        super.onResume();
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+      super.onResume();
 
-        if (currentUser != null) {
-
-
-            userProfilePhoto = currentUser.getProviderData().get(0).getPhotoUrl();
-            userName = currentUser.getDisplayName();
-            if (userName == null) {
-                finish();
-            }
-            Log.d("username", "onResume: " + userName);
-            userID = currentUser.getUid();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user==null){
+            Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+            finish();
         }
+        firebaseListener();
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "onResume: manifest error");
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
@@ -528,6 +726,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d(TAG, "onPause: skizb");
         super.onPause();
         locationManager.removeUpdates(locationListener);
+        COUNT_UNREAD_MESSAGES=0;
         Log.d(TAG, "onPause: verj");
     }
 
@@ -677,6 +876,36 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         canvas.drawBitmap(bitmap, rect, rect, paint);
 
         return output;
+    }
+
+
+    @Override
+    public void unreadMessagesCount() {
+
+        COUNT_UNREAD_MESSAGES++;
+        String count=COUNT_UNREAD_MESSAGES+"";
+        unread_messages.setText(count);
+        Log.d("unreadedd", "unreadMessagesCount: "+COUNT_UNREAD_MESSAGES);
+        Toast.makeText(this,""+COUNT_UNREAD_MESSAGES,Toast.LENGTH_LONG).show();
+    }
+
+
+
+    public static Context getAppContext() {
+        return MainActivity.context;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            Toast.makeText(this,"knopka nazad",Toast.LENGTH_LONG).show();
+            onBackPressed();
+            moveTaskToBack(true);
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(0);
+
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }

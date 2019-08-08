@@ -1,44 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activityes.PostListActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/post_list_toolbar_id"
         android:layout_width="match_parent"
         android:layout_height="40sp"
-        android:background="#D8CACA"
+        android:background="@color/colorWhite"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/list_map_nav_bar"
         app:title="Map"/>
 
 
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/post_list_recycler_view_id"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/list_map_nav_bar"
-        app:layout_constraintBottom_toTopOf="@id/nav_bar"/>
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/list_map_nav_bar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layoutAnimation="@anim/layout_animation_down_to_up"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/post_list_toolbar_id"
-        app:menu="@menu/map_listmap_menu"
-        android:background="#D8CACA"
-        />
-    <android.support.design.widget.BottomNavigationView
+        app:layout_constraintBottom_toTopOf="@id/nav_bar"/>
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -46,7 +37,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:menu="@menu/bottom_nav_menu"
-        android:background="#D8CACA"
+        android:background="?android:attr/windowBackground"
         />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

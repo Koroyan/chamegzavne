@@ -1,20 +1,24 @@
 package com.example.chamegzavne.Activityes;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.chamegzavne.InfoClass.Chat;
 import com.example.chamegzavne.Adapters.MessageRecyclerViewAdapter;
+import com.example.chamegzavne.InfoClass.IsReaded;
 import com.example.chamegzavne.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MessageActivity extends AppCompatActivity {
@@ -32,10 +37,12 @@ public class MessageActivity extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myPostRef;
     DatabaseReference mychatListRef;
+    DatabaseReference isReaded;
 
     EditText message;
     Button sendMessage;
 
+    Toolbar toolbar;
 
 
     MessageRecyclerViewAdapter adapter;
@@ -49,7 +56,11 @@ public class MessageActivity extends AppCompatActivity {
         message=findViewById(R.id.message_edit_text);
         sendMessage=findViewById(R.id.message_send_btn);
 
+        toolbar=findViewById(R.id.message_toolbar_id);
+        setSupportActionBar(toolbar);
 
+        //setActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent=getIntent();
         final String chatID=intent.getStringExtra(INTENT_MES_KEY);
@@ -58,6 +69,10 @@ public class MessageActivity extends AppCompatActivity {
         myPostRef=database.getReference("posts/"+chatID+"/messages");
 
         mychatListRef=database.getReference("chatLists/"+MainActivity.userID);
+
+        isReaded=database.getReference("isReaded/"+MainActivity.userID);
+
+
 
 
         // chatIDs.add(new ChatList(chatID,"my Message"));
@@ -80,7 +95,7 @@ public class MessageActivity extends AppCompatActivity {
                     Toast.makeText(MessageActivity.this, "please write message!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Chat chat=new Chat(MainActivity.userName,message.getText().toString(),MainActivity.userID);
+                Chat chat=new Chat(MainActivity.userName,message.getText().toString(),MainActivity.userID,MainActivity.userProfilePhoto.toString(),new Date().toString());
                 message.setText("");
                 myPostRef.push().setValue(chat);
 
@@ -93,6 +108,7 @@ public class MessageActivity extends AppCompatActivity {
                 Log.d(TAG, "onChildAdded: skizb");
                 try{
                 Chat chat = dataSnapshot.getValue(Chat.class);
+                isReaded.push().setValue(new IsReaded(chat.getUserID()+chat.getUserMessage(),MainActivity.userID,chat.getSendTime()));
                 chats.add(chat);
                 adapter.setAdapter(chats);
                 recyclerView.smoothScrollToPosition(chats.size());
@@ -101,6 +117,7 @@ public class MessageActivity extends AppCompatActivity {
                     Log.d("chato", "error");
                     Toast.makeText(MessageActivity.this,"messagelist deleded",Toast.LENGTH_SHORT).show();
                     mychatListRef.child(chatID).removeValue();
+
                     finish();
 
                 }
@@ -128,6 +145,29 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
         Log.d(TAG, "onCreate: verj");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            Toast.makeText(this,"knopka nazad",Toast.LENGTH_LONG).show();
+            finish();
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            finish();
+            onBackPressed();
+            Toast.makeText(this,"knopka nazad",Toast.LENGTH_LONG).show();
+            return true;
+
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 

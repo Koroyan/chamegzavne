@@ -14,21 +14,12 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.constraint.solver.widgets.Helper;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.widget.ThemedSpinnerAdapter;
+import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.solver.widgets.Helper;
+import androidx.core.app.NotificationCompat;
+import androidx.appcompat.widget.ThemedSpinnerAdapter;
 import android.util.Log;
-import android.widget.ActionMenuView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.chamegzavne.Activityes.MainActivity;
 import com.example.chamegzavne.R;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -36,9 +27,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Queue;
+import java.util.Objects;
 import java.util.Random;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -60,7 +49,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         to at least one of them. Therefore, confirm if version is Oreo or higher, then setup notification channel
       */
 
-      if(remoteMessage.getData().get("ID")!=null && !remoteMessage.getData().get("ID").toString().equals(MainActivity.userID.toString())){
+      if(remoteMessage.getData().get("ID")!=null && Objects.equals(remoteMessage.getData().get("ID"), MainActivity.userID)){
          return;
       }
 

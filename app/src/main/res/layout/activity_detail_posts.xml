@@ -1,78 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Activityes.DetailPostsActivity">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="1.5dp"
+    >
 
 
 
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/info_detail_card_view"
+        <View
+            android:id="@+id/view_top"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:cardCornerRadius="70sp"
-            app:cardBackgroundColor="#D8CACA"
+            android:layout_height="0.05dp"
+            android:layout_marginStart="15dp"
+
+            android:layout_marginTop="1.5dp"
+            android:layout_marginEnd="15dp"
+            android:background="#34A09797"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_margin="9sp">
-            <android.support.constraint.ConstraintLayout
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/gel_detail_post"
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/detail_profile_image"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_margin="5sp"
+                    android:src="@mipmap/ic_launcher"
+                    app:civ_border_color="#FF000000"
+                    app:civ_border_width="2.5dp"
+
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
-                    android:id="@+id/info_detail_user_name"
+                    android:id="@+id/detail_user_name_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Grigorys"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:textSize="25sp"
                     android:textColor="#000000"
-                    android:textStyle="bold"
-                    android:layout_marginTop="12sp"/>
-                <TextView
-                    android:id="@+id/post_detail_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="mdffsdgfdfgd"
-                    app:layout_constraintTop_toBottomOf="@id/info_detail_user_name"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:textStyle="italic"
-                    android:textSize="18sp"
-                    android:padding="15sp"/>
-
-                <TextView
-                    android:id="@+id/post_detail_comment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/post_detail_title" />
-
-                <TextView
-                    android:id="@+id/post_detail_accept_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="accept"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_margin="22sp"
                     android:textSize="25sp"
                     android:textStyle="bold"
-                    android:textColor="#000000"/>
-            </android.support.constraint.ConstraintLayout>
+                    app:layout_constraintStart_toEndOf="@id/detail_profile_image"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        </android.support.v7.widget.CardView>
+                <TextView
+                    android:id="@+id/detail_title_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4sp"
+
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="title"
+                    android:textSize="19sp"
+                    app:layout_constraintStart_toEndOf="@+id/detail_profile_image"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_user_name_id" />
+
+                <TextView
+                    android:id="@+id/detail_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1sp"
+                    android:layout_marginTop="8dp"
+                    android:text="Georgia:Akhalkalakis raioni:diliska"
+                    android:textColor="#CEC3C3"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_profile_image" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraint_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFA"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/detail_address">
+
+                    <TextView
+                        android:id="@+id/detail_comment_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1sp"
+                        android:layout_marginBottom="1sp"
+                        android:padding="6sp"
+                        android:text="mdffsdgfdfgd"
+                        android:textSize="22sp"
+                        android:textStyle="italic"
+                        app:layout_constraintBottom_toBottomOf="@id/constraint_id"
+                        app:layout_constraintStart_toStartOf="@id/constraint_id"
+                        app:layout_constraintTop_toTopOf="@id/constraint_id" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.github.chrisbanes.photoview.PhotoView
+                    android:id="@+id/detail_image"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_margin="0.1sp"
+                    app:layout_constraintDimensionRatio="H,16:22"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/constraint_id" />
 
 
-</android.support.constraint.ConstraintLayout>
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.05dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="1.5dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="#000000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/detail_image" />
+
+                <ImageView
+                    android:id="@+id/detail_accept_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4.8sp"
+                    android:src="@drawable/ic_message_black_24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

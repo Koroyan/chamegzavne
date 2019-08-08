@@ -1,18 +1,22 @@
 package com.example.chamegzavne.Adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.chamegzavne.InfoClass.ChatList;
 import com.example.chamegzavne.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessageListRecyclerViewAdapter extends RecyclerView.Adapter<MessageListRecyclerViewAdapter.ViewHolder> {
     private LayoutInflater mInflater;
@@ -40,6 +44,14 @@ public class MessageListRecyclerViewAdapter extends RecyclerView.Adapter<Message
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.chatListName.setText(chatLists.get(i).getChatListName());
         viewHolder.chatListMessage.setText(chatLists.get(i).getChatListMessage());
+        Picasso.get().load(chatLists.get(i).getChatListPhotoUri()).fit().centerCrop().into(viewHolder.messageListImage);
+        Log.d("photos", "ID: "+chatLists.get(i).getChatListPhotoUri().toString());
+        if(chatLists.get(i).getHasUnread().equals("true")){
+            viewHolder.hasUnread.setText("    ");
+        }
+        else{
+            viewHolder.hasUnread.setText("");
+        }
     }
 
     @Override
@@ -50,11 +62,15 @@ public class MessageListRecyclerViewAdapter extends RecyclerView.Adapter<Message
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener{
         TextView chatListName;
         TextView chatListMessage;
+        CircleImageView messageListImage;
+        TextView hasUnread;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             chatListName=itemView.findViewById(R.id.chat_list_row_name_txt);
             chatListMessage=itemView.findViewById(R.id.chat_list_row_message_id);
+            messageListImage=itemView.findViewById(R.id.chat_list_profile_image);
+            hasUnread=itemView.findViewById(R.id.has_unread_id);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }

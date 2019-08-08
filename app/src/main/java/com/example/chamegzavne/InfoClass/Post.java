@@ -10,6 +10,7 @@ public class Post {
     private String pName;
     private String pGel;
     private String pTitle;
+    private String pUserPhotoURL;
     private String pPhotoURL;
     private String pComment;
     private String pUserID;
@@ -22,6 +23,7 @@ public class Post {
             ,String pGel
             ,String pTitle
             ,String pComment
+            ,String pUserPhotoURL
             ,String pPhotoURL
             ,String pUserID
             ,double pLatitude
@@ -29,6 +31,7 @@ public class Post {
         this.pName=pName;
         this.pGel=pGel;
         this.pTitle=pTitle;
+        this.pUserPhotoURL=pUserPhotoURL;
         this.pPhotoURL=pPhotoURL;
         this.pComment=pComment;
         this.pUserID=pUserID;
@@ -112,5 +115,13 @@ public class Post {
 
     public double getpLongitude() {
         return pLongitude;
+    }
+
+    public void setpUserPhotoURL(String pUserPhotoURL) {
+        this.pUserPhotoURL = pUserPhotoURL;
+    }
+
+    public String getpUserPhotoURL() {
+        return pUserPhotoURL;
     }
 }

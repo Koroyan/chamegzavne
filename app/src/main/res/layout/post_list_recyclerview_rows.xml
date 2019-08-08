@@ -1,10 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="1.5dp"
+    >
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardBackgroundColor="@color/colorWhite"
+        card_view:cardCornerRadius="12dp"
+        card_view:cardElevation="1.5dp"
+        card_view:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    <View
+        android:id="@+id/view_top"
+        android:layout_width="match_parent"
+        android:layout_height="0.05dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="1.5dp"
+        android:layout_marginEnd="15dp"
+        android:background="#34A09797"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linear"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -14,18 +43,27 @@
         android:layout_height="match_parent">
 
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/post_list_card_view_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="70sp"
-            app:cardBackgroundColor="#D8CACA"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_margin="9sp">
-            <android.support.constraint.ConstraintLayout
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/fron_card"
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    card_view:cardBackgroundColor="#eeeeef"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardElevation="1.5dp"
+                    card_view:cardUseCompatPadding="true"
+                    android:background="@color/colorWhite"
+                    card_view:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -35,7 +73,8 @@
                     android:src="@mipmap/ic_launcher"
                     app:civ_border_width="2dp"
                     app:civ_border_color="#FF000000"
-                    android:layout_margin="20dp"
+                    android:layout_margin="5sp"
+
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
 
@@ -44,38 +83,115 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Grigorys"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/profile_image"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:textSize="25sp"
+                    android:textSize="20sp"
                     android:textColor="#000000"
                     android:textStyle="bold"
-                    android:layout_marginTop="12sp"/>
+                    />
+
                 <TextView
                     android:id="@+id/post_list_title_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="3sp"
+
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:text="title"
-                    app:layout_constraintStart_toEndOf="@id/post_list_user_name_id"
-                    app:layout_constraintEnd_toStartOf="@+id/post_list_user_name_id"
-                    app:layout_constraintTop_toBottomOf="@+id/post_list_user_name_id"
                     android:textSize="17sp"
-                    android:layout_margin="3sp"/>
+                    app:layout_constraintStart_toEndOf="@+id/profile_image"
+                    app:layout_constraintTop_toBottomOf="@+id/post_list_user_name_id" />
+
+                <TextView
+                    android:id="@+id/post_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2pt"
+                    tools:text="Georgia:Akhalkalakis raioni:diliska"
+                    android:textSize="15sp"
+                    android:textColor="#CEC3C3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profile_image"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/constraint_id"
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    card_view:cardBackgroundColor="#eeeeef"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardElevation="1.5dp"
+                    android:background="@color/colorWhite"
+                    card_view:cardUseCompatPadding="true"
+                    app:layout_constraintTop_toBottomOf="@id/fron_card"
+                    app:layout_constraintStart_toStartOf="parent">
+
                 <TextView
                     android:id="@+id/post_list_comment_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="mdffsdgfdfgd"
-                    app:layout_constraintTop_toBottomOf="@id/profile_image"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/constraint_id"
+                    app:layout_constraintStart_toStartOf="@id/constraint_id"
+                    app:layout_constraintBottom_toBottomOf="@id/constraint_id"
                     android:textStyle="italic"
                     android:textSize="18sp"
-                    android:layout_margin="8dp"
-                    android:padding="15sp"/>
+                    android:layout_marginTop="1sp"
+                    android:layout_marginBottom="1sp"
+                    android:padding="6sp"/>
+
+               </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card"
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    card_view:cardBackgroundColor="#eeeeef"
+                    card_view:cardCornerRadius="10dp"
+                    card_view:cardElevation="0.5dp"
+                    card_view:cardUseCompatPadding="true"
+                    app:layout_constraintDimensionRatio="H,16:12"
+                    android:background="@color/colorWhite"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/constraint_id">
+
+                <ImageView
+                    android:id="@+id/post_list_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0.1sp"
+                     />
+                </androidx.cardview.widget.CardView>
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.05dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginBottom="1.5dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="#34A09797"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/post_accept_btn"
+                    card_view:layout_constraintBottom_toBottomOf="parent"/>
+                <ImageView
+                    android:id="@+id/post_accept_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_message_black_24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/card"
+                    android:layout_margin="4.8sp"/>
 
 
-            </android.support.constraint.ConstraintLayout>
 
-        </android.support.v7.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
     </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,10 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".Activityes.PostListActivity"></activity>
+        <activity android:name=".Activityes.ImagePinchZoomActivity"></activity>
 
         <service
-            android:name=".push_notification.MyFirebaseInstanceIDService"
+            android:name=".Services.UnreadedMessagesListenerService"
             android:enabled="true"
             android:exported="true" />
         <service
@@ -31,10 +34,35 @@
         </service>
 
         <activity android:name=".Activityes.LoginActivity" />
-        <activity android:name=".Activityes.AddPostsActivity" />
         <activity android:name=".Activityes.DetailPostsActivity" />
-        <activity android:name=".Activityes.MessageActivity" />
-        <activity android:name=".Activityes.MessageListActivity" />
+        <activity
+            android:name=".Activityes.MessageListActivity"
+            android:parentActivityName=".Activityes.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activityes.MainActivity" />
+        </activity>
+        <activity
+            android:name=".Activityes.AddPostsActivity"
+            android:parentActivityName=".Activityes.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activityes.MainActivity" />
+        </activity>
+        <activity
+            android:name=".Activityes.PostListActivity"
+            android:parentActivityName=".Activityes.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activityes.MainActivity" />
+        </activity>
+        <activity
+            android:name=".Activityes.MessageActivity"
+            android:parentActivityName=".Activityes.MessageListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activityes.MessageListActivity" />
+        </activity>
         <activity
             android:name=".Activityes.MainActivity"
             android:label="@string/app_name">
@@ -48,24 +76,30 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
 
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/AdUnitAppID" />
     </application>
 
 </manifest>
