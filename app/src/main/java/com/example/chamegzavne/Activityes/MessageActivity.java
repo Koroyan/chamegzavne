@@ -108,6 +108,7 @@ public class MessageActivity extends AppCompatActivity {
                 Log.d(TAG, "onChildAdded: skizb");
                 try{
                 Chat chat = dataSnapshot.getValue(Chat.class);
+
                 isReaded.push().setValue(new IsReaded(chat.getUserID()+chat.getUserMessage(),MainActivity.userID,chat.getSendTime()));
                 chats.add(chat);
                 adapter.setAdapter(chats);

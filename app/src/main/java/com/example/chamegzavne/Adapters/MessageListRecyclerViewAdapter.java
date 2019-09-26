@@ -44,8 +44,8 @@ public class MessageListRecyclerViewAdapter extends RecyclerView.Adapter<Message
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.chatListName.setText(chatLists.get(i).getChatListName());
         viewHolder.chatListMessage.setText(chatLists.get(i).getChatListMessage());
-        Picasso.get().load(chatLists.get(i).getChatListPhotoUri()).fit().centerCrop().into(viewHolder.messageListImage);
-        Log.d("photos", "ID: "+chatLists.get(i).getChatListPhotoUri().toString());
+        Picasso.get().load(chatLists.get(i).getChatListUserPhotoUri()).fit().centerCrop().into(viewHolder.messageListImage);
+        Log.d("photos", "ID: "+chatLists.get(i).getChatListUserPhotoUri().toString());
         if(chatLists.get(i).getHasUnread().equals("true")){
             viewHolder.hasUnread.setText("    ");
         }

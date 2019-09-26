@@ -53,5 +53,10 @@ dependencies {
 
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
 
+    implementation 'net.rimoto:intlphoneinput:1.0.1'
+
+    implementation 'com.firebase:geofire-java:3.0.0'
+
+
 
 }

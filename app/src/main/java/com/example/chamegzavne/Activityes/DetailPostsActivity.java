@@ -152,7 +152,7 @@ public class DetailPostsActivity extends AppCompatActivity implements View.OnCli
                 //if(!postUserId.equals(MainActivity.userID)){
                     Log.d("postsiii", "" +"!=");
                 Intent intent=new Intent(DetailPostsActivity.this,MessageActivity.class);
-                myChatListstRef.child(postID).setValue(new ChatList(result.get(2),result.get(3),result.get(7),result.get(8)));
+                myChatListstRef.child(postID).setValue(new ChatList(result.get(2),result.get(3),result.get(7),result.get(8),result.get(9)));
                 Log.d(TAGo, "Added chatList: "+result.get(2)+"in "+MainActivity.userID+"chat:"+postUserId);
                 intent.putExtra(INTENT_MES_KEY,postID);
                 startActivity(intent);

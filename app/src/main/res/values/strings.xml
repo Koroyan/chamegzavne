@@ -6,7 +6,7 @@
     <string name="facebook_app_id">301126120768600</string>
     <string name="fb_login_protocol_scheme">fb301126120768600</string>
     <string name="list">List</string>
-    <string name="settings">Settings</string>
+    <string name="settings">პარამეტრები</string>
     <string name="menu_sign_out">Menu_sign_out</string>
     <string name="delete">Delete</string>
     <string name="name">Name</string>
@@ -16,4 +16,9 @@
     <string name="testAdUnitAppID">ca-app-pub-3940256099942544~3347511713</string>
     <string name="AdUnitAppID">ca-app-pub-1537892667165291~9892742328</string>
     <string name="AdUnitID">ca-app-pub-1537892667165291/6449742213</string>
+    <string name="sign_out">გასვლა</string>
+    <string name="about_us">ჩვენ შესახებ</string>
+    <string name="contact_us">Contact us</string>
+    <string name="hot_line">ცხელი ხაზი</string>
+
 </resources>

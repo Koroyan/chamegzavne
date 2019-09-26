@@ -8,15 +8,18 @@ public class ChatList {
     private String chatListName;
     private String chatListMessage;
     private String chatListPhotoUri;
+    private String chatListUserPhotoUri;
     private String hasUnread="false";
     public ChatList(String chatListName
             ,String chatListMessage
             ,String chatID
-            ,String chatListPhotoUri){
+            ,String chatListPhotoUri
+            ,String chatListUserPhotoUri){
         this.chatListName=chatListName;
         this.chatListMessage=chatListMessage;
         this.chatID=chatID;
         this.chatListPhotoUri=chatListPhotoUri;
+        this.chatListUserPhotoUri=chatListUserPhotoUri;
     }
     public ChatList(){}
 
@@ -58,5 +61,13 @@ public class ChatList {
 
     public String getHasUnread() {
         return hasUnread;
+    }
+
+    public void setChatListUserPhotoUri(String chatListUserPhotoUri) {
+        this.chatListUserPhotoUri = chatListUserPhotoUri;
+    }
+
+    public String getChatListUserPhotoUri() {
+        return chatListUserPhotoUri;
     }
 }

@@ -17,5 +17,8 @@
         <item name="android:textSize">25sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="back_up_style">
+        <item name="android:background">@drawable/map</item>
+    </style>
 
 </resources>

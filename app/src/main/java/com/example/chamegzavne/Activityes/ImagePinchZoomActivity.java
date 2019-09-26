@@ -93,7 +93,7 @@ public class ImagePinchZoomActivity extends AppCompatActivity implements View.On
                 //if(!postUserId.equals(MainActivity.userID)){
                 Log.d("postsiii", "" +"!=");
                 Intent intent=new Intent(ImagePinchZoomActivity.this,MessageActivity.class);
-                myChatListstRef.child(postID).setValue(new ChatList(result.get(2),result.get(3),result.get(7),result.get(8)));
+                myChatListstRef.child(postID).setValue(new ChatList(result.get(2),result.get(3),result.get(7),result.get(8),result.get(9)));
                 Log.d(TAGo, "Added chatList: "+result.get(2)+"in "+MainActivity.userID+"chat:"+postUserId);
                 intent.putExtra(INTENT_MES_KEY,postID);
                 startActivity(intent);

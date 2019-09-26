@@ -10,6 +10,10 @@
         android:id="@+id/navigation_messages"
         android:icon="@drawable/ic_list_black_24dp"
         android:title="" />
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_person_black_24dp"
+        android:title=""/>
 
 
 

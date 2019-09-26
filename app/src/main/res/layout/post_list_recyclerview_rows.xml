@@ -7,64 +7,6 @@
     android:layout_marginTop="1.5dp"
     >
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        card_view:cardBackgroundColor="@color/colorWhite"
-        card_view:cardCornerRadius="12dp"
-        card_view:cardElevation="1.5dp"
-        card_view:cardUseCompatPadding="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    <View
-        android:id="@+id/view_top"
-        android:layout_width="match_parent"
-        android:layout_height="0.05dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="1.5dp"
-        android:layout_marginEnd="15dp"
-        android:background="#34A09797"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linear"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/fron_card"
-                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    card_view:cardBackgroundColor="#eeeeef"
-                    card_view:cardCornerRadius="10dp"
-                    card_view:cardElevation="1.5dp"
-                    card_view:cardUseCompatPadding="true"
-                    android:background="@color/colorWhite"
-                    card_view:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
                 <de.hdodenhof.circleimageview.CircleImageView
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/profile_image"
@@ -88,7 +30,17 @@
                     android:textSize="20sp"
                     android:textColor="#000000"
                     android:textStyle="bold"
+                    android:layout_marginStart="3sp"
                     />
+
+    <ImageView
+        android:id="@+id/post_list_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_more_vert_black_24dp"
+        android:layout_margin="20dp"/>
 
                 <TextView
                     android:id="@+id/post_list_title_id"
@@ -96,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="3sp"
 
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="3sp"
                     android:layout_marginTop="8dp"
                     android:text="title"
                     android:textSize="17sp"
@@ -113,58 +65,32 @@
                     android:textColor="#CEC3C3"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/profile_image"/>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/constraint_id"
-                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    card_view:cardBackgroundColor="#eeeeef"
-                    card_view:cardCornerRadius="10dp"
-                    card_view:cardElevation="1.5dp"
-                    android:background="@color/colorWhite"
-                    card_view:cardUseCompatPadding="true"
-                    app:layout_constraintTop_toBottomOf="@id/fron_card"
-                    app:layout_constraintStart_toStartOf="parent">
+
 
                 <TextView
                     android:id="@+id/post_list_comment_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="6sp"
                     android:text="mdffsdgfdfgd"
-                    app:layout_constraintTop_toTopOf="@id/constraint_id"
-                    app:layout_constraintStart_toStartOf="@id/constraint_id"
-                    app:layout_constraintBottom_toBottomOf="@id/constraint_id"
-                    android:textStyle="italic"
                     android:textSize="18sp"
-                    android:layout_marginTop="1sp"
-                    android:layout_marginBottom="1sp"
-                    android:padding="6sp"/>
-
-               </androidx.cardview.widget.CardView>
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card"
-                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    card_view:cardBackgroundColor="#eeeeef"
-                    card_view:cardCornerRadius="10dp"
-                    card_view:cardElevation="0.5dp"
-                    card_view:cardUseCompatPadding="true"
-                    app:layout_constraintDimensionRatio="H,16:12"
-                    android:background="@color/colorWhite"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textStyle="italic"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/constraint_id">
+                    app:layout_constraintTop_toBottomOf="@+id/post_address" />
+
 
                 <ImageView
                     android:id="@+id/post_list_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="0.1sp"
-                     />
-                </androidx.cardview.widget.CardView>
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="H,16:14"
+                    android:layout_marginTop="8sp"
+
+                    app:layout_constraintTop_toBottomOf="@+id/post_list_comment_id"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
                 <View
                     android:id="@+id/view"
                     android:layout_width="match_parent"
@@ -176,22 +102,22 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/post_accept_btn"
-                    card_view:layout_constraintBottom_toBottomOf="parent"/>
+                    />
                 <ImageView
                     android:id="@+id/post_accept_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_message_black_24dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card"
+                    app:layout_constraintTop_toBottomOf="@+id/post_list_image"
                     android:layout_margin="4.8sp"/>
 
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
-    </LinearLayout>
-    </androidx.cardview.widget.CardView>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

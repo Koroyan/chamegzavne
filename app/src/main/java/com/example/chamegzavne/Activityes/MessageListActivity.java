@@ -124,7 +124,7 @@ public class MessageListActivity extends AppCompatActivity implements MessageLis
         ChatList chatList1=chatList;
         chatList1.setHasUnread("false");
         try{
-            myChatListstRef.child(chatList.getChatID()+chatList.getChatListMessage()).setValue(chatList1);
+                       myChatListstRef.child(chatList.getChatID()+chatList.getChatListMessage()).setValue(chatList1);
         Intent intent=new Intent(MessageListActivity.this,MessageActivity.class);
         intent.putExtra(INTENT_MES_KEY,chatList.getChatID()+chatList.getChatListMessage());
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -211,6 +211,7 @@ public class MessageListActivity extends AppCompatActivity implements MessageLis
     }
 
     void firebaseListener(){
+        myChatListstRef.keepSynced(true);
      myChatListstRef.addChildEventListener(new ChildEventListener() {
          @Override
          public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
